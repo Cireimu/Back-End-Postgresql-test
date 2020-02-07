@@ -474,14 +474,14 @@ _The returned object will look like:_
 [
     {
         "name": "Zaba00s0850080",
-        "cuisine_id": 2,
+        "cuisine_name": "Mexican",
         "location": "Las Vegas, NV",
         "hours_of_operation": "11:00AM - 9PM",
         "img_url": "sfdsdf"
     },
     {
         "name": "Zaba00s0850080",
-        "cuisine_id": 2,
+        "cuisine_name": "Mexican",
         "location": "Las Vegas, NV",
         "hours_of_operation": "11:00AM - 9PM",
         "img_url": "sfdsdf"
