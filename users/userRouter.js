@@ -8,10 +8,10 @@ const { checkUserId } = require('./validation-middleware');
 
 const router = express.Router();
 
-router.get('/:username/reviews', checkUserId, (req, res) => {
-    const { username } = req.params;
+router.get('/:id/reviews', checkUserId, (req, res) => {
+    const {id} = req.params
 
-    Reviews.findByUsername(username)
+    Reviews.findByUsername(id)
     .then(reviews => {
         res.status(200).json(reviews)
     })

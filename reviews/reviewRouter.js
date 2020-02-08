@@ -22,7 +22,8 @@ router.get('/:id', checkReviewId, (req, res) => {
 router.post('/', restricted, (req, res) => {
     const filteredBody = bodyWhitelist(req.body)
 
-    const body = {...filteredBody, reviewed_by: req.token.username}
+    const body = {...filteredBody, reviewed_by: req.token.reviewed_by}
+    console.log(req.token)
 
     Reviews.add(body)
         .then(review => res.status(201).json(review))
@@ -47,7 +48,7 @@ router.put('/:id', restricted, checkReviewId, checkIfAuthorized, (req, res) => {
 
 router.delete('/:id', restricted, checkReviewId, checkIfAuthorized, (req, res) => {
     Reviews.remove(req.params.id)
-        .then(the => res.status(204).end())
+        .then(() => res.status(204).end())
         .catch(err => {
             console.log(err)
             res.status(500).json({ errorMessage: 'Failed to delete review', error: err })

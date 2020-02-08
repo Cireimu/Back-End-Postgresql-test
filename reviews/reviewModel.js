@@ -11,13 +11,16 @@ module.exports = {
 const db = require('../database/db-config');
 
 function find() {
-    return db('reviews')
-        .orderBy('id')
+    return db('reviews as r')
+        .select('r.id', 'r.menu_item', 'r.item_price', 'r.item_rating', 'r.item_review', 'r.restaurant_id', 'r.item_image_url', 'r.date_visited', 'r.created_at', 'updated_at', 'u.username')
+        .join('users as u', 'r.reviewed_by', 'u.id')
+        .orderBy('r.id')
 }
 
 function findById(id) {
-    return db('reviews')
+    return db('reviews as r')
         .where({id})
+        .orderBy('r.id')
         .first()
 }
 
@@ -27,10 +30,12 @@ function findByRestaurantId(id) {
         .orderBy('id')
 }
 
-function findByUsername(username) {
-    return db('reviews')
-        .where({reviewed_by: username})
-        .orderBy('id')
+function findByUsername(id) {
+    return db('reviews as r')
+        .where({reviewed_by: id})
+        .select('r.id', 'r.menu_item', 'r.item_price', 'r.item_rating', 'r.item_review', 'r.restaurant_id', 'r.item_image_url', 'r.date_visited', 'u.username')
+        .join('users as u', 'r.reviewed_by', 'u.id')
+        .orderBy('r.id')
 }
 
 function add(review) {
@@ -39,8 +44,9 @@ function add(review) {
         .returning('id')
         .then(ids => {
             const [id] = ids;
-            return findById(id);
+            return findById(id)
         })
+
 }
 
 function update(id, changes) {

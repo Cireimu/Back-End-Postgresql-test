@@ -33,8 +33,8 @@ function add(user) {
     })
 }
 
-function findById(username) {
+function findById(id) {
   return db('users')
-    .where({ username })
+    .where({ id })
     .first();
 }

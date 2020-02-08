@@ -40,7 +40,7 @@ function checkReviewId(req, res, next) {
 }
 
 function checkIfAuthorized(req, res, next) {
-    if(req.review.reviewed_by === req.token.username) {
+    if(req.review.reviewed_by === req.token.reviewed_by) {
         next()
     } else {
         res.status(401).json({ message: 'You cannot edit or delete reviews that you dont own'})

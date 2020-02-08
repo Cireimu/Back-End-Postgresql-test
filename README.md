@@ -62,7 +62,7 @@ _Example_
 
 ```
 {
-	"username": "EthanHoover0",
+	"username": "EthanHoover",
 	"password": "123"
 }
 ```
@@ -71,8 +71,10 @@ _The returned object will be:_
 
 ```
 {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkV0aGFuSG9vdmVyMCIsImlhdCI6MTU4MDc5MTkxOCwiZXhwIjoxNTgwODc4MzE4fQ.lw7pcQD_JXyhI4NOL1TjjMbUiggNs-ShFhWWfhk7xlU",
-    "message": "Welcome back EthanHoover0!"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkV0aGFuSG9vdmVyIiwicmV2aWV3ZWRfYnkiOjQsImlhdCI6MTU4MTEyMDU2OCwiZXhwIjoxNTgxMjA2OTY4fQ._Aw8dRiFI_7Pc-VX1PKpoJ2vaNewWmY2erppLk6Apio",
+    "message": "Welcome back EthanHoover!",
+    "reviewed_by": 4,
+    "created_by": "EthanHoover"
 }
 ```
 
@@ -95,18 +97,19 @@ Schema:
 |item_review | string | yes | review of item|
 |item_image_url| string  | yes | picture of item in jpg form |
 |date_visited | date  | yes | date of visitation |
+|reviewed_by | integer | yes* | is equal to user.id and is passed through automatically as a body const |
 
 _Example_
 
 ```
 {
-	      "menu_item": "burrito",
-          "item_price": 6.50,
-          "item_rating": 4,
-          "restaurant_id": 2,
-          "item_review": "Yeah it was okay.",
-          "item_image_url": "https://www.mrbreakfast.com/images/1077_spicy_cheesy_eggs.jpg",
-          "date_visited": "2020-1-05"
+    "menu_item": "super test review",
+    "item_price": 5,
+    "item_rating": 5,
+    "restaurant_id": 1,
+    "item_review": "Yeah it was good",
+    "item_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/285px-RedDot_Burger.jpg"
+    "date_visited": "2020-1-05"
 }
 ```
 
@@ -114,14 +117,14 @@ _The returned object:_
 
 ```
 {
-    "id": 4,
-    "menu_item": "burrito",
-    "item_price": 6.5,
-    "item_rating": 4,
-    "item_review": "Yeah it was okay.",
-    "restaurant_id": 2,
+    "id": 10,
+    "menu_item": "super test review",
+    "item_price": "5.00",
+    "item_rating": 5,
+    "item_review": "Yeah it was good",
+    "restaurant_id": 1,
     "reviewed_by": "EthanHoover",
-    "item_image_url": "https://www.mrbreakfast.com/images/1077_spicy_cheesy_eggs.jpg",
+    "item_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/285px-RedDot_Burger.jpg",
     "created_at": "2020-02-04 04:59:46",
     "updated_at": "2020-02-04 04:59:46",
     "date_visited": "2020-1-05"
@@ -163,45 +166,7 @@ _The returned object will be the same as the updated fields above_
     "name": "Nice Sweet Potatoes"
 }
 ```
----
 
-## Retrieve All Reviews
--------------------
-_HTTP Method: [GET]_  
-__URL: /api/reviews__
-
-_The returned object will look like:_
-
-```
-[
-    {
-        "id": 1,
-        "menu_item": "Mushroom Burger",
-        "item_price": 8,
-        "item_rating": 5,
-        "item_review": "Nice well cooked shroom burger!",
-        "restaurant_id": 1,
-        "reviewed_by": "ethan",
-        "item_image_url": "https://www.simplyrecipes.com/wp-content/uploads/2011/06/grilled-beef-mushroom-burgers-verrtical-a-1800.jpg",
-        "created_at": "2020-02-03 20:39:38",
-        "updated_at": "2020-02-03 20:39:38",
-        "date_visited": "2020-1-20"
-    },
-    {
-        "id": 2,
-        "menu_item": "Cheesy Bean Burrito",
-        "item_price": 7,
-        "item_rating": 3,
-        "item_review": "Okay burrito, too cheesy.",
-        "restaurant_id": 3,
-        "reviewed_by": "kelly",
-        "item_image_url": "https://images-gmi-pmc.edge-generalmills.com/074a3680-3adc-4aae-85f5-1e3a4f2caa34.jpg",
-        "created_at": "2020-02-03 20:39:38",
-        "updated_at": "2020-02-03 20:39:38",
-        "date_visited": "2020-1-10"
-    },
-]
-```
 ---
 
 ## Delete a Review
@@ -220,7 +185,7 @@ Schema:
 _Example_
 
 ```
-[url]/api/user/:id
+[url]/api/user/2
 ```
 
 _returns:_
@@ -229,42 +194,105 @@ _returns:_
 nothing as of right now
 ```
 ---
+---
 
 ## Retrieve All Reviews
 -------------------
 _HTTP Method: [GET]_  
-__URL: /api/users/:username/reviews__
+__URL: /api/reviews__
 
 _The returned object will look like:_
 
 ```
 [
     {
-        "id": 4,
-        "menu_item": "burrito",
-        "item_price": 6.5,
-        "item_rating": 4,
-        "item_review": "Yeah it was okay.",
-        "restaurant_id": 2,
-        "reviewed_by": "EthanHoover0",
-        "item_image_url": "https://www.mrbreakfast.com/images/1077_spicy_cheesy_eggs.jpg",
-        "created_at": "2020-02-04 18:21:54",
-        "updated_at": "2020-02-04 18:21:54",
-        "date_visited": "2020-1-05"
+        "id": 1,
+        "menu_item": "Mushroom Burger",
+        "item_price": "8.00",
+        "item_rating": 5,
+        "item_review": "Nice well cooked shroom burger!",
+        "restaurant_id": 1,
+        "reviewed_by": "ethan",
+        "item_image_url": "https://www.simplyrecipes.com/wp-content/uploads/2011/06/grilled-beef-mushroom-burgers-verrtical-a-1800.jpg",
+        "created_at": "2020-02-06T21:08:31.838Z",
+        "updated_at": "2020-02-06T21:08:31.838Z",
+        "date_visited": "2020-01-20T00:00:00.000Z"
     },
     {
-        "id": 5,
-        "menu_item": "Super Amazing Salad",
-        "item_price": 20.5,
+        "id": 2,
+        "menu_item": "Cheesy Bean Burrito",
+        "item_price": "7.00",
+        "item_rating": 3,
+        "item_review": "Okay burrito, too cheesy.",
+        "restaurant_id": 3,
+        "reviewed_by": "kelly",
+        "item_image_url": "https://images-gmi-pmc.edge-generalmills.com/074a3680-3adc-4aae-85f5-1e3a4f2caa34.jpg",
+        "created_at": "2020-02-06T21:08:31.838Z",
+        "updated_at": "2020-02-06T21:08:31.838Z",
+        "date_visited": "2020-01-10T00:00:00.000Z"
+    },
+]
+```
+---
+---
+
+## Retrieve Review By ID
+-------------------
+_HTTP Method: [GET]_  
+__URL: /api/reviews__
+
+_The returned object will look like:_
+
+```
+[
+    {
+        "id": 1,
+        "menu_item": "Mushroom Burger",
+        "item_price": 8,
         "item_rating": 5,
-        "item_review": "Yeah it was amazing.",
+        "item_review": "Nice well cooked shroom burger!",
         "restaurant_id": 1,
-        "reviewed_by": "EthanHoover0",
-        "item_image_url": "https://www.mrbreakfast.com/images/1077_spicy_cheesy_eggs.jpg",
-        "created_at": "2020-02-04 18:25:37",
-        "updated_at": "2020-02-04 18:25:37",
-        "date_visited": null
+        "reviewed_by": 1,
+        "item_image_url": "https://www.simplyrecipes.com/wp-content/uploads/2011/06/grilled-beef-mushroom-burgers-verrtical-a-1800.jpg",
+        "created_at": "2020-02-07 21:24:40",
+        "updated_at": "2020-02-07 21:24:40",
+        "date_visited": "2020-1-20"
     }
+]
+```
+---
+
+## Retrieve All Reviews Submitted by specified user
+-------------------
+_HTTP Method: [GET]_  
+__URL: /api/users/:id/reviews__
+
+_The returned object will look like:_
+
+```
+[
+    {
+        "id": 11,
+        "menu_item": "more than just a test review",
+        "item_price": 5,
+        "item_rating": 5,
+        "item_review": "Yeah it was pretty good.",
+        "restaurant_id": 1,
+        "item_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/285px-RedDot_Burger.jpg",
+        "date_visited": null,
+        "username": "EthanHoover"
+    },
+    {
+        "id": 12,
+        "menu_item": "super test review",
+        "item_price": 5,
+        "item_rating": 5,
+        "item_review": "Yeah it was good",
+        "restaurant_id": 1,
+        "item_image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/285px-RedDot_Burger.jpg",
+        "date_visited": null,
+        "username": "EthanHoover"
+    },
 ]
 ```
 

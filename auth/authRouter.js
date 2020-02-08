@@ -38,7 +38,7 @@ router.post('/login', loginRequirements, (req, res) => {
           res.status(200).json({
             token: token,
             message: `Welcome back ${user.username}!`,
-            reviewed_by: user.username,
+            reviewed_by: user.id,
             created_by: user.username
           });
         } else {
@@ -54,7 +54,7 @@ router.post('/login', loginRequirements, (req, res) => {
 function signToken(user) {
     const payload = {
         username: user.username,
-        reviewed_by: user.username
+        reviewed_by: user.id
     };
 
     const options = {
