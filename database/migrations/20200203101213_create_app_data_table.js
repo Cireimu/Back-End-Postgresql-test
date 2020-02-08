@@ -49,9 +49,9 @@ exports.up = function(knex) {
         .inTable('restaurants')
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
-        tbl.string('reviewed_by')
+        tbl.integer('reviewed_by')
         .notNullable()
-        .references('username')
+        .references('id')
         .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('CASCADE');

@@ -49,11 +49,11 @@ module.exports = {
   }
   
   function checkUserId(req, res, next) {
-    const { username } = req.params
+    const {id} = req.params
   
-    console.log(username)
+    console.log(id)
   
-    Users.findById(username)
+    Users.findById(id)
       .then((user) => {
         console.log(user)
         if (user) {
