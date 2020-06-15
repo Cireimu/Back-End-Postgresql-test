@@ -1,67 +1,72 @@
-const router = require('express').Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const secrets = require('../config/secrets');
+const router = require("express").Router();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const secrets = require("../config/secrets");
 
-const Users = require('../users/userModel');
-const { loginRequirements, signupRequirements, checkForDuplicates } = require('../users/validation-middleware');
+const Users = require("../users/userModel");
+const {
+  loginRequirements,
+  signupRequirements,
+  checkForDuplicates,
+} = require("../users/validation-middleware");
 
-router.post('/register', signupRequirements, checkForDuplicates, (req, res) => {
-    const user = req.body;
-    const hash = bcrypt.hashSync(user.password, 10);
-    user.password = hash;
+router.post("/register", signupRequirements, checkForDuplicates, (req, res) => {
+  const user = req.body;
+  const hash = bcrypt.hashSync(user.password, 10);
+  user.password = hash;
 
-    const token = signToken(user);
+  const token = signToken(user);
 
-    Users.add(user)
-        .then(saved => {
-            res.status(201).json({
-                token: token,
-                message: `Welcome ${user.username}`,
-            });
-        })
-        .catch(err => {
-            console.log(err)
-            res.status(500).json(err);
-        });
+  Users.add(user)
+    .then((saved) => {
+      res.status(201).json({
+        token: token,
+        message: `Welcome ${user.username}`,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
-router.post('/login', loginRequirements, (req, res) => {
-    let { username, password } = req.body;
-  
-    Users.findBy({ username })
-      .then(user => {
-        if (user && bcrypt.compareSync(password, user.password)) {
-  
-          const token = signToken(user);
-  
-          res.status(200).json({
-            token: token,
-            message: `Welcome back ${user.username}!`,
-            reviewed_by: user.id,
-            created_by: user.username
-          });
-        } else {
-          res.status(401).json({ message: 'Invalid Credentials' });
-        }
-      })
-      .catch(error => {
-        console.log(error)
-        res.status(500).json(error);
-      });
-  });
+router.post("/login", loginRequirements, (req, res) => {
+  let { username, password } = req.body;
 
+  Users.findBy({ username })
+    .then((user) => {
+      if (user && bcrypt.compareSync(password, user.password)) {
+        const token = signToken(user);
+
+        res.status(200).json({
+          token: token,
+          message: `Welcome back ${user.username}!`,
+          reviewed_by: user.id,
+          created_by: user.username,
+        });
+      } else {
+        res.status(401).json({ message: "Invalid Credentials" });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json(error);
+    });
+});
+
+// #server-side-authentication
+// a function that returns a JSON Web Token that expires in 24 hours, linked to a user's id
 function signToken(user) {
-    const payload = {
-        username: user.username,
-        reviewed_by: user.id
-    };
+  const payload = {
+    username: user.username,
+    reviewed_by: user.id,
+  };
 
-    const options = {
-        expiresIn: '24h'
-    };
+  const options = {
+    expiresIn: "24h",
+  };
 
-    return jwt.sign(payload, secrets.jwtSecret, options)
+  return jwt.sign(payload, secrets.jwtSecret, options);
 }
 
 module.exports = router;
